@@ -47,13 +47,4 @@ void mx_video_fill_rect(const float x,
 void mx_video_set_draw_color(const mx_color4b_t *color);
 void mx_video_quit(void);
 
-void _mx_video_gl_init(void);
-void _mx_video_view_set(void);
-void _mx_video_ortho(GLfloat *matrix,
-                     GLfloat left,
-                     GLfloat right,
-                     GLfloat bottom,
-                     GLfloat top);
-void _mx_video_dump_shader_log(GLuint shader);
-
 #endif // H_MXVIDEO

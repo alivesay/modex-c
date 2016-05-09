@@ -5,7 +5,7 @@
 #include "core/mx_util.h"
 #endif
 
-#define MX_LOG(lvl, msg) _mx_log_extra(lvl, msg, __FILE__, __func__, __LINE__)
+#define MX_LOG(lvl, msg) mx_log_extra(lvl, msg, __FILE__, __func__, __LINE__)
 
 typedef enum {
     MX_LOG_EMERG = 0,

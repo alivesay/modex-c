@@ -24,7 +24,7 @@ libmodex_la_SOURCES = \
 	gl/mx_gl_program.c 
 
 modex.h: libmodex.la
-	@echo -e "#ifndef H_MODEX\n#define H_MODEX\n\n" \
+	@echo -e "#ifndef H_MODEX\n#define H_MODEX\n" \
 		> ${top_srcdir}/include/modex.h \
 	&& cat \
 		core/mx_types.h \

@@ -16,6 +16,15 @@
 /* global video state */
 mx_video_t g_mx_video = { 0 };
 
+void _mx_video_gl_init(void);
+void _mx_video_view_set(void);
+void _mx_video_ortho(GLfloat *matrix,
+                     GLfloat left,
+                     GLfloat right,
+                     GLfloat bottom,
+                     GLfloat top);
+void _mx_video_dump_shader_log(GLuint shader);
+
 static const char *_mx_video_default_screen_vertex_glsl =
         "precision highp float;\n"
         "uniform mat4 uProjectionMatrix;\n"
@@ -34,8 +43,6 @@ const char *_mx_video_default_screen_fragment_glsl =
         "       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);\n"
         "   }\n"
         "}";
-
-
 
 //TODO: convert classes to ref passing style
 
