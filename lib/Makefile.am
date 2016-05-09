@@ -21,6 +21,25 @@ libmodex_la_SOURCES = \
 	core/mx_util.c \
     core/mx_video.c \
 	gl/mx_gl_common.c \
-	gl/mx_gl_program.c
+	gl/mx_gl_program.c 
+
+modex.h: libmodex.la
+	@echo -e "#ifndef H_MODEX\n#define H_MODEX\n\n" \
+		> ${top_srcdir}/include/modex.h \
+	&& cat \
+		core/mx_types.h \
+		core/mx_color.h \
+		core/mx_log.h \
+		core/mx_math.h \
+		core/mx_memory.h \
+		core/mx_util.h \
+		core/mx_video.h \
+		gl/mx_gl_common.h \
+		gl/mx_gl_program.h \
+		>> ${top_srcdir}/include/modex.h \
+	&& echo -e "\n#endif // H_MODEX" \
+		>> ${top_srcdir}/include/modex.h
+
+all: modex.h
 
 -include $(top_srcdir)/git.mk

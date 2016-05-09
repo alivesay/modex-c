@@ -1,8 +1,10 @@
 #ifndef H_MXGLCOMMON
 #define H_MXGLCOMMON
 
+#ifndef H_MODEX
 #include "core/mx_types.h"
 #include "core/mx_log.h"
+#endif
 
 #include <epoxy/gl.h>
 

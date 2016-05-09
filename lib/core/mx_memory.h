@@ -1,8 +1,10 @@
 #ifndef H_MXMEMORY
 #define H_MXMEMORY
 
+#ifndef H_MODEX
 #include "core/mx_types.h"
 #include "core/mx_log.h"
+#endif
 
 #include <stdlib.h>
 #include <limits.h>

@@ -1,7 +1,9 @@
 #ifndef H_MXMATH
 #define H_MXMATH
 
+#ifndef H_MODEX
 #include "core/mx_types.h"
+#endif
 
 uint32_t mx_math_min(uint32_t a, uint32_t b);
 uint32_t MX_MIN(uint32_t a, uint32_t b);

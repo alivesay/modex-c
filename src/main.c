@@ -1,4 +1,5 @@
-#include "../lib/core/mx_video.h"
+#include "modex.h"
+
 #include <unistd.h>
 
 int main() {

@@ -1,7 +1,9 @@
 #ifndef H_MXCOLOR
 #define H_MXCOLOR
 
+#ifndef H_MODEX
 #include "core/mx_types.h"
+#endif
 
 typedef union {
     uint32_t packed;

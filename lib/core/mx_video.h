@@ -1,8 +1,10 @@
 #ifndef H_MXVIDEO
 #define H_MXVIDEO
 
+#ifndef H_MODEX
 #include "mx_types.h"
 #include "mx_color.h"
+#endif
 
 #include <SDL2/SDL.h>
 
