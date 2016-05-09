@@ -1,22 +1,23 @@
 #include "mx_types.h"
 #include "mx_math.h"
 #include "mx_video.h"
+#include "gl/mx_gl_common.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 
 #include <epoxy/gl.h>
 #include <epoxy/glx.h>
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengles2.h>
 
 /* global video state */
-mx_video_t g_mx_video;
+mx_video_t g_mx_video = { 0 };
+//TODO: convert classes to ref passing style
 
 #define MX_SCREEN_WIDTH 320
 #define MX_SCREEN_HEIGHT 240
 #define MX_SCREEN_BPP 8
-
-#define MX_DEBUG_OPENGL_ERRCHK() _mx_debug_opengl_errchk(__FILE__, __LINE__)
 
 void _mx_debug_opengl_errchk(char *file, int line) {
     GLenum err = glGetError();
@@ -26,32 +27,21 @@ void _mx_debug_opengl_errchk(char *file, int line) {
     }
 }
 
+
 void mx_video_init(void) {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    MX_DEBUG_OPENGL_ERRCHK();
-}
-
-void mx_video_mode_set(uint16 width, uint16 height, uint8 bpp, bool fullscreen) {
-    GLFWwindow *window = glfwCreateWindow(width, height, "MODEX", fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
-    
-    if (NULL == window) {
-        printf("glfwCreateWindow failed :(\n");
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("SDL error: %s\n", SDL_GetError());
+        // TODO
     }
 
-    glfwMakeContextCurrent(window);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+}
 
-    g_mx_video.width = width;
-    g_mx_video.height = height;
-    g_mx_video.bpp = bpp;
-    g_mx_video.fullscreen = fullscreen;
-    g_mx_video.window = window;
-
-
+void _mx_video_gl_init(void) {
     GLint max_tex_image_units;
     GLint max_tex_size;
 
@@ -70,7 +60,11 @@ void mx_video_mode_set(uint16 width, uint16 height, uint8 bpp, bool fullscreen) 
         "precision highp float;" \
         "vec4 color = vec4(1.0,0.0,1.0,1.0);" \
         "void main() {" \
-        "   gl_FragColor = color;" \
+        "   if (mod(gl_FragCoord.y, 2.0f) < 1.0) {" \
+        "       gl_FragColor = color;" \
+        "   } else {" \
+        "       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);" \
+        "   }" \
         "}";
 
     const GLfloat triangle[] = {
@@ -126,7 +120,27 @@ void mx_video_mode_set(uint16 width, uint16 height, uint8 bpp, bool fullscreen) 
     printf("GL_MAX_TEXTURE_UNITS:\t%d\n", (int)max_tex_image_units);
     printf("GL_MAX_TEXTURE_SIZE:\t%d\n", (int)max_tex_size);
 
-    MX_DEBUG_OPENGL_ERRCHK();
+    MX_GL_ERRCHK();
+}
+
+void mx_video_mode_set(uint16 width, uint16 height, uint8 bpp, bool fullscreen) {
+    // TODO: what if it exists/
+
+
+    g_mx_video.window = SDL_CreateWindow(
+        "MODEX",
+        0,
+        0,
+        width,
+        height,
+        SDL_WINDOW_OPENGL);
+    
+    g_mx_video.glcontext = SDL_GL_CreateContext(g_mx_video.window); 
+
+    g_mx_video.width = width;
+    g_mx_video.height = height;
+
+    _mx_video_gl_init();
 }
 
 void mx_video_view_set() {
@@ -141,7 +155,7 @@ void mx_video_view_set() {
     glClearColor(0.3f, 0.4f, 0.4f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    MX_DEBUG_OPENGL_ERRCHK();
+    MX_GL_ERRCHK();
 }
 
 void _mx_video_ortho(GLfloat *matrix, GLfloat left, GLfloat right, GLfloat bottom, GLfloat top) {
@@ -190,7 +204,13 @@ void mx_video_draw_begin(void) {
 }
 
 void mx_video_draw_end(void) {
-    glfwSwapBuffers(g_mx_video.window);
-   // glDisable(GL_DEPTH_TEST);
-    MX_DEBUG_OPENGL_ERRCHK();
+    SDL_GL_SwapWindow(g_mx_video.window);
+    // glDisable(GL_DEPTH_TEST);
+    MX_GL_ERRCHK();
+}
+
+void mx_video_quit(void) {
+    SDL_GL_DeleteContext(g_mx_video.glcontext);
+    SDL_DestroyWindow(g_mx_video.window);
+    SDL_Quit();
 }

@@ -4,15 +4,7 @@
 #include <epoxy/gl.h>
 #include <epoxy/glx.h>
 
-#ifndef FALSE
-#define FALSE 0
-#endif
-#ifndef TRUE
-#define TRUE 1
-#endif
-#ifndef bool
-typedef int bool;
-#endif
+#include <stdbool.h>
 
 #ifdef _MSC_VER
 typedef unsigned	__int8		uint8;

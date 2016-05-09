@@ -12,8 +12,8 @@ LT_INIT
 
 PKG_CHECK_MODULES(MODEX, [
     epoxy >= 1.3.1,
-    glfw3 >= 3.1.2,
-    gl >= 11.2.1
+    gl >= 11.2.1,
+    sdl2 >= 2.0.4 
 ])
 
 AC_CONFIG_FILES([
