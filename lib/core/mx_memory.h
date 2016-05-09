@@ -1,8 +1,8 @@
 #ifndef H_MXMEMORY
 #define H_MXMEMORY
 
-#include "mx_types.h"
-#include "mx_log.h"
+#include "core/mx_types.h"
+#include "core/mx_log.h"
 
 #include <stdlib.h>
 #include <limits.h>
@@ -27,6 +27,6 @@
         var = NULL; \
     } while(0)
 
-#define MX_CHECKBOUNDS(arr, n, size) ((arr) && (n >= 0) && (n < size))
+#define MX_CHECKBOUNDS(arr, n, size) ((arr != NULL) && (n >= 0) && (n < size))
 
 #endif // H_MXMEMORY

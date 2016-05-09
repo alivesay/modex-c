@@ -1,16 +1,15 @@
 #ifndef H_MXCOLOR
 #define H_MXCOLOR
 
-#include "mx_types.h"
-
+#include "core/mx_types.h"
 
 typedef union {
-    uint32 packed;
+    uint32_t packed;
     struct mx_color_argb_t {
-        uint8 b;
-        uint8 g;
-        uint8 r;
-        uint8 a;
+        uint8_t b;
+        uint8_t g;
+        uint8_t r;
+        uint8_t a;
     } argb;
 } mx_color4b_t;
 

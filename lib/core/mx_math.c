@@ -1,26 +1,27 @@
-#include "mx_types.h"
+#include "core/mx_types.h"
+
 #include "mx_math.h"
 
 #include <limits.h>
 
-inline uint32 mx_math_min(uint32 a, uint32 b) {
+inline uint32_t mx_math_min(uint32_t a, uint32_t b) {
     return (a > b) ? (b) : (a);
 }
 
-inline uint32 MX_MIN(uint32 a, uint32 b) {
+inline uint32_t MX_MIN(uint32_t a, uint32_t b) {
     return mx_math_min(a, b);
 }
 
-inline uint32 mx_math_max(uint32 a, uint32 b) {
+inline uint32_t mx_math_max(uint32_t a, uint32_t b) {
     return (a < b) ? (b) : (a);
 }
 
-inline uint32 MX_MAX(uint32 a, uint32 b) {
+inline uint32_t MX_MAX(uint32_t a, uint32_t b) {
     return mx_math_max(a, b);
 }
 
-inline uint32 mx_math_np2(uint32 n, bool accept_current) {
-    uint32 i;
+inline uint32_t mx_math_np2(uint32_t n, bool accept_current) {
+    uint32_t i;
 
     if (!accept_current) n--;
 
@@ -31,8 +32,8 @@ inline uint32 mx_math_np2(uint32 n, bool accept_current) {
     return ++n;
 }
 
-inline uint32 mx_math_pp2(uint32 n, bool accept_current) {
-    uint32 i;
+inline uint32_t mx_math_pp2(uint32_t n, bool accept_current) {
+    uint32_t i;
 
     if (!accept_current) n--;
 
@@ -43,6 +44,6 @@ inline uint32 mx_math_pp2(uint32 n, bool accept_current) {
     return n - (n >> 1);
 }
 
-inline bool mx_math_isp2(uint32 n) {
+inline bool mx_math_isp2(uint32_t n) {
     return n > 0 && (n & (n - 1)) == 0;
 }

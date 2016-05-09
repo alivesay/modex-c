@@ -1,7 +1,9 @@
-#include "mx_types.h"
-#include "mx_math.h"
-#include "mx_video.h"
+#include "core/mx_types.h"
+#include "core/mx_log.h"
+#include "core/mx_math.h"
 #include "gl/mx_gl_common.h"
+
+#include "mx_video.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,6 +15,28 @@
 
 /* global video state */
 mx_video_t g_mx_video = { 0 };
+
+static const char *_mx_video_default_screen_vertex_glsl =
+        "precision highp float;\n"
+        "uniform mat4 uProjectionMatrix;\n"
+        "attribute vec2 Position;\n"
+        "void main() {\n"
+        "   gl_Position = uProjectionMatrix * vec4(Position, 0.0, 1.0);\n"
+        "}";
+
+const char *_mx_video_default_screen_fragment_glsl =
+        "precision highp float;\n"
+        "vec4 color = vec4(1.0,0.0,1.0,1.0);\n"
+        "void main() {\n"
+        "   if (mod(gl_FragCoord.y, 2.0f) < 1.0) {\n"
+        "       gl_FragColor = color;\n"
+        "   } else {\n"
+        "       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);\n"
+        "   }\n"
+        "}";
+
+
+
 //TODO: convert classes to ref passing style
 
 #define MX_SCREEN_WIDTH 320
@@ -37,6 +61,7 @@ void mx_video_init(void) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 }
@@ -47,25 +72,6 @@ void _mx_video_gl_init(void) {
 
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &max_tex_image_units);
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
-
-    const char *vertexsrc = \
-        "precision highp float;" \
-        "uniform mat4 uProjectionMatrix;" \
-        "attribute vec2 Position;" \
-        "void main() {" \
-        "   gl_Position = uProjectionMatrix * vec4(Position, 0.0, 1.0);" \
-        "}";
-
-    const char *fragmentsrc = \
-        "precision highp float;" \
-        "vec4 color = vec4(1.0,0.0,1.0,1.0);" \
-        "void main() {" \
-        "   if (mod(gl_FragCoord.y, 2.0f) < 1.0) {" \
-        "       gl_FragColor = color;" \
-        "   } else {" \
-        "       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);" \
-        "   }" \
-        "}";
 
     const GLfloat triangle[] = {
         200.0f, 10.0f,
@@ -87,7 +93,7 @@ void _mx_video_gl_init(void) {
     g_mx_video.fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     g_mx_video.vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     
-    glShaderSource(g_mx_video.fragment_shader, 1, &fragmentsrc, NULL);
+    glShaderSource(g_mx_video.fragment_shader, 1, &_mx_video_default_screen_fragment_glsl, NULL);
     glCompileShader(g_mx_video.fragment_shader);
 
     GLint compiled_ok;
@@ -99,7 +105,7 @@ void _mx_video_gl_init(void) {
         glAttachShader(g_mx_video.shader_program, g_mx_video.fragment_shader);
     }
 
-    glShaderSource(g_mx_video.vertex_shader, 1, &vertexsrc, NULL);
+    glShaderSource(g_mx_video.vertex_shader, 1, &_mx_video_default_screen_vertex_glsl, NULL);
     glCompileShader(g_mx_video.vertex_shader);
  
     glGetShaderiv(g_mx_video.vertex_shader, GL_COMPILE_STATUS, &compiled_ok);
@@ -120,17 +126,17 @@ void _mx_video_gl_init(void) {
     printf("GL_MAX_TEXTURE_UNITS:\t%d\n", (int)max_tex_image_units);
     printf("GL_MAX_TEXTURE_SIZE:\t%d\n", (int)max_tex_size);
 
-    MX_GL_ERRCHK();
+    MX_GL_ERRCHK(MX_LOG_ERR);
 }
 
-void mx_video_mode_set(uint16 width, uint16 height, uint8 bpp, bool fullscreen) {
+void mx_video_mode_set(uint16_t width, uint16_t height, uint8_t bpp, bool fullscreen) {
     // TODO: what if it exists/
 
 
     g_mx_video.window = SDL_CreateWindow(
         "MODEX",
-        0,
-        0,
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
         width,
         height,
         SDL_WINDOW_OPENGL);
@@ -155,7 +161,7 @@ void mx_video_view_set() {
     glClearColor(0.3f, 0.4f, 0.4f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    MX_GL_ERRCHK();
+    MX_GL_ERRCHK(MX_LOG_ERR);
 }
 
 void _mx_video_ortho(GLfloat *matrix, GLfloat left, GLfloat right, GLfloat bottom, GLfloat top) {
@@ -206,7 +212,7 @@ void mx_video_draw_begin(void) {
 void mx_video_draw_end(void) {
     SDL_GL_SwapWindow(g_mx_video.window);
     // glDisable(GL_DEPTH_TEST);
-    MX_GL_ERRCHK();
+    MX_GL_ERRCHK(MX_LOG_ERR);
 }
 
 void mx_video_quit(void) {

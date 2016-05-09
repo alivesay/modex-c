@@ -1,5 +1,8 @@
-#include "../mx_types.h"
+#include "core/mx_types.h"
+#include "core/mx_log.h"
+
 #include "mx_gl_common.h"
+
 #include "mx_gl_program.h"
 
 #include <epoxy/gl.h>
@@ -9,7 +12,7 @@
 void mx_gl_program_init(mx_gl_program_t *program) {
     program->gl_program_id = glCreateProgram();
     
-    MX_GL_ERRCHK();
+    MX_GL_ERRCHK(MX_LOG_ERR);
 }
 
 void mx_gl_program_attach_shader(mx_gl_program_t *program, const char* src, GLenum type) {
@@ -22,7 +25,7 @@ void mx_gl_program_attach_shader(mx_gl_program_t *program, const char* src, GLen
     glDetachShader(shader, program->gl_program_id);
     glDeleteShader(shader);
 
-    MX_GL_ERRCHK();
+    MX_GL_ERRCHK(MX_LOG_ERR);
 }
 
 void mx_gl_program_free(mx_gl_program_t *program) {

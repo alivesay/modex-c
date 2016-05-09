@@ -1,4 +1,4 @@
-#include "../lib/mx_video.h"
+#include "../lib/core/mx_video.h"
 #include <unistd.h>
 
 int main() {

@@ -1,7 +1,7 @@
 #ifndef H_MXGLPROGRAM
 #define H_MXGLPROGRAM
 
-#include "../mx_types.h"
+#include "core/mx_types.h"
 
 #include <epoxy/gl.h>
 
