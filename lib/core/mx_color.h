@@ -5,6 +5,7 @@
 #include "core/mx_types.h"
 #endif
 
+// TODO: packed?
 typedef union {
     uint32_t packed;
     struct mx_color_argb_t {

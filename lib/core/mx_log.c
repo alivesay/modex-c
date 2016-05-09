@@ -15,27 +15,30 @@ static const char *const _mx_log_errstrs[_MX_LOG_LEVEL_COUNT] = {
     "DEBUG"
 };
 
+static const char *const _mx_log_get_errstr(const mx_log_level_t level) {
+    if (MX_CHECKBOUNDS(_mx_log_errstrs, level, _MX_LOG_LEVEL_COUNT)) {
+        return _mx_log_errstrs[level];
+    }
+
+    return "INVALID_LOG_LEVEL";
+}
 
 // TODO:  this all needs to be building strings first.. won't be writing to
 // stdout for long...
 
-void mx_log(mx_log_level_t level, const char *const message) {
-    if (MX_CHECKBOUNDS(_mx_log_errstrs, level, _MX_LOG_LEVEL_COUNT)) {
-        fprintf(stderr, "%s: %s\n", _mx_log_errstrs[level], message);
-    } else {
-        fprintf(stderr, "%s: %s\n", "INVALID_LOG_LEVEL", message);
-    }
+void mx_log(const mx_log_level_t level, const char *const message) {
+    static const char *const fmt = "%s: %s\n";
+
+    fprintf(stderr, fmt, _mx_log_get_errstr(level), message);
 }
 
-void mx_log_extra(mx_log_level_t level,
-        const char *const message,
-        const char *const file,
-        const char *const func,
-        const int line) {
+void mx_log_extra(const mx_log_level_t level,
+                  const char *const message,
+                  const char *const file,
+                  const char *const func,
+                  const int line) {
 
-    if (MX_CHECKBOUNDS(_mx_log_errstrs, level, _MX_LOG_LEVEL_COUNT)) {
-        fprintf(stderr, "%s:%s:%d: %s: %s\n", file, func, line, _mx_log_errstrs[level], message);
-    } else {
-        fprintf(stderr, "%s:%s:%d: %s: %s\n", file, func, line, "INVALID_LOG_LEVEL", message);
-    }
+    static const char *const fmt = "%s:%s:%d: %s: %s\n"; 
+        
+    fprintf(stderr, fmt, file, func, line, _mx_log_get_errstr(level), message);
 }

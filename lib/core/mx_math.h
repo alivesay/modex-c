@@ -5,12 +5,13 @@
 #include "core/mx_types.h"
 #endif
 
-uint32_t mx_math_min(uint32_t a, uint32_t b);
-uint32_t MX_MIN(uint32_t a, uint32_t b);
-uint32_t mx_math_max(uint32_t a, uint32_t b);
-uint32_t MX_MAX(uint32_t a, uint32_t b);
-uint32_t mx_math_np2(uint32_t n, bool accept_current);
-uint32_t mx_math_pp2(uint32_t n, bool accept_current);
-bool mx_math_isp2(uint32_t);
+// TODO: create matching float funcs
+uint64_t mx_math_min(const uint64_t a, const uint64_t b);
+#define MX_MIN(a,b)  mx_math_min(a,b)
+uint64_t mx_math_max(const uint64_t a, const uint64_t b);
+#define MX_MAX(a,b)  mx_math_max(a,b)
+uint64_t mx_math_np2(uint64_t n, const bool accept_current);
+uint64_t mx_math_pp2(uint64_t n, const bool accept_current);
+bool mx_math_isp2(const uint64_t);
 
 #endif // H_MXMATH

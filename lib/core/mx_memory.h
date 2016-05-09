@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <limits.h>
 
+// TODO: rewrite to prevent duplicate expansion with funcs
+//
 #define MX_MALLOC(var, size) \
     do { \
         var = malloc(size); \

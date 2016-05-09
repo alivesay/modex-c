@@ -19,9 +19,9 @@ typedef enum {
     _MX_LOG_LEVEL_COUNT
 } mx_log_level_t;
 
-void mx_log(mx_log_level_t level, const char *const message);
+void mx_log(const mx_log_level_t level, const char *const message);
 
-void mx_log_extra(mx_log_level_t level,
+void mx_log_extra(const mx_log_level_t level,
                   const char *const message,
                   const char *const file,
                   const char *const func,
