@@ -9,13 +9,15 @@
 #include <epoxy/glx.h>
 
 // maybe return error?
-void mx_gl_program_init(mx_gl_program_t *program) {
+void mx_gl_program_init(mx_gl_program_t *const program) {
     program->gl_program_id = glCreateProgram();
     
     MX_GL_ERRCHK(MX_LOG_ERR);
 }
 
-void mx_gl_program_attach_shader(mx_gl_program_t *program, const char* src, GLenum type) {
+void mx_gl_program_attach_shader(mx_gl_program_t *const program,
+                                 const char *const src,
+                                 const GLenum type) {
     GLuint shader = glCreateShader(type);
 
     glShaderSource(shader, 1, &src, NULL);

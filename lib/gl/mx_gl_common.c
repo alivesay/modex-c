@@ -25,7 +25,7 @@ static const char* _mx_gl_errstr_GL_STACK_OVERFLOW =
 static const char* _mx_gl_errstr_GL_UNKNOWN_ERROR =
     "GL_UNKNOWN_ERROR";
 
-const char* mx_gl_get_errstr(GLenum err) {
+const char* mx_gl_get_errstr(const GLenum err) {
     switch (err) {
         case GL_NO_ERROR:
             return _mx_gl_errstr_GL_NO_ERROR;

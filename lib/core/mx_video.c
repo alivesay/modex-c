@@ -35,7 +35,7 @@ static const char *_mx_video_default_screen_vertex_glsl =
 
 const char *_mx_video_default_screen_fragment_glsl =
         "precision highp float;\n"
-        "vec4 color = vec4(1.0,0.0,1.0,1.0);\n"
+        "vec4 color = vec4(1.0,1.0,1.0,1.0);\n"
         "void main() {\n"
         "   if (mod(gl_FragCoord.y, 2.0f) < 1.0) {\n"
         "       gl_FragColor = color;\n"
@@ -81,9 +81,9 @@ void _mx_video_gl_init(void) {
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
 
     const GLfloat triangle[] = {
-        200.0f, 10.0f,
-        10.0f, 200.0f,
-        400.0f, 200.0f
+        160.0f, 10.0f,
+        310.0f, 230.0f,
+        10.0f, 230.0f
     };
 
     glGenBuffers(1, &g_mx_video.vbo);
@@ -165,7 +165,7 @@ void mx_video_view_set() {
 
     glUniformMatrix4fv(g_mx_video.projection_ref, 1, GL_FALSE, g_mx_video.projection_matrix);
 
-    glClearColor(0.3f, 0.4f, 0.4f, 1.0f);
+    glClearColor(32/255.0f, 64/255.0f, 144/255.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     MX_GL_ERRCHK(MX_LOG_ERR);
@@ -210,7 +210,7 @@ void _mx_video_dump_shader_log(GLuint shader) {
 void mx_video_draw_begin(void) {
     //glEnable(GL_DEPTH_TEST);
     //glClearDepthf(1.0f);
-    glClearColor(0.3f, 0.4f, 0.4f, 1.0f);
+    glClearColor(32/255.0f, 64/255.0f, 144/255.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);

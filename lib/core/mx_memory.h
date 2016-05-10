@@ -7,7 +7,6 @@
 #endif
 
 #include <stdlib.h>
-#include <limits.h>
 
 #define MX_MALLOC(ptr, size) \
     do { \
@@ -30,5 +29,9 @@
     } while(0)
 
 #define MX_CHECKBOUNDS(arr, n, size) ((arr != NULL) && (n >= 0) && (n < size))
+
+void* mx_malloc(const size_t size);
+void* mx_calloc(const size_t nmemb, const size_t size);
+void mx_free(void* ptr);
 
 #endif // H_MXMEMORY
