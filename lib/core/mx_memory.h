@@ -9,26 +9,24 @@
 #include <stdlib.h>
 #include <limits.h>
 
-// TODO: rewrite to prevent duplicate expansion with funcs
-//
-#define MX_MALLOC(var, size) \
+#define MX_MALLOC(ptr, size) \
     do { \
-        var = malloc(size); \
-        if (!var) \
-        mx_log(MXLogLevel_EMERG, MX_LOG_BUILD_STR("malloc() failed")); \
+        ptr = malloc(size); \
+        if (!ptr) \
+            mx_log_extra(MX_LOG_CRIT, "malloc() failed", __FILE__, __func__, __LINE__); \
     }  while(0)
 
-#define MX_CALLOC(var, nmemb, size) \
+#define MX_CALLOC(ptr, nmemb, size) \
     do { \
-        var = calloc(nmemb, size); \
-        if (!var) \
-        mx_log(MXLogLevel_EMERG, MX_LOG_BUILD_STR("calloc() failed")); \
+        ptr = calloc(nmemb, size); \
+        if (!ptr) \
+            mx_log_extra(MX_LOG_CRIT, "calloc() failed", __FILE__, __func__, __LINE__); \
     } while(0)
 
-#define MX_FREE(var) \
+#define MX_FREE(ptr) \
     do { \
-        free(var); \
-        var = NULL; \
+        free(ptr); \
+        ptr = NULL; \
     } while(0)
 
 #define MX_CHECKBOUNDS(arr, n, size) ((arr != NULL) && (n >= 0) && (n < size))
