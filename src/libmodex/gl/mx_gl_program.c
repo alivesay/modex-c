@@ -4,9 +4,6 @@
 
 #include "mx_gl_program.h"
 
-#include <epoxy/gl.h>
-#include <epoxy/glx.h>
-
 // maybe return error?
 void mx_gl_program_init(mx_gl_program_t *const program) {
     program->gl_program_id = glCreateProgram();

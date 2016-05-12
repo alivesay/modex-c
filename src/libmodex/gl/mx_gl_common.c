@@ -4,7 +4,9 @@
 #include "mx_gl_common.h"
 
 #include <stdio.h>
-#include <epoxy/gl.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengles2.h>
+
 
 static const char* _mx_gl_errstr_GL_NO_ERROR =
     "GL_NO_ERROR";
@@ -18,10 +20,6 @@ static const char* _mx_gl_errstr_GL_INVALID_FRAMEBUFFER_OPERATION =
     "GL_INVALID_FRAMEBUFFER_OPERATION";
 static const char* _mx_gl_errstr_GL_OUT_OF_MEMORY =
     "GL_OUT_OF_MEMORY";
-static const char* _mx_gl_errstr_GL_STACK_UNDERFLOW =
-    "GL_STACK_UNDERFLOW";
-static const char* _mx_gl_errstr_GL_STACK_OVERFLOW =
-    "GL_STACK_OVERFLOW";
 static const char* _mx_gl_errstr_GL_UNKNOWN_ERROR =
     "GL_UNKNOWN_ERROR";
 
@@ -39,10 +37,6 @@ const char* mx_gl_get_errstr(const GLenum err) {
             return _mx_gl_errstr_GL_INVALID_FRAMEBUFFER_OPERATION;
         case GL_OUT_OF_MEMORY:
             return _mx_gl_errstr_GL_OUT_OF_MEMORY;
-        case GL_STACK_UNDERFLOW:
-            return _mx_gl_errstr_GL_STACK_UNDERFLOW;
-        case GL_STACK_OVERFLOW:
-            return _mx_gl_errstr_GL_STACK_OVERFLOW;
         default:
             return _mx_gl_errstr_GL_UNKNOWN_ERROR;
     }
@@ -58,5 +52,11 @@ void mx_gl_errchk(const mx_log_level_t level,
     while (err != GL_NO_ERROR) {
         mx_log_extra(level, mx_gl_get_errstr(err), file, func, line);
         err = glGetError();
+    }
+}
+
+void mx_gl_init(void) {
+    if(!gladLoadGLES2Loader(SDL_GL_GetProcAddress)) {
+        MX_LOG(MX_LOG_EMERG, "gladLoadGL() failed");
     }
 }

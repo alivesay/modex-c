@@ -3,6 +3,7 @@
 #include "mx_log.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 static const char *const _mx_log_errstrs[_MX_LOG_LEVEL_COUNT] = {
     "EMERG",
@@ -30,6 +31,8 @@ void mx_log(const mx_log_level_t level, const char *const message) {
     static const char *const fmt = "%s: %s\n";
 
     fprintf(stderr, fmt, _mx_log_get_errstr(level), message);
+    
+    if (level == MX_LOG_EMERG) exit(EXIT_FAILURE);
 }
 
 void mx_log_extra(const mx_log_level_t level,
@@ -41,4 +44,6 @@ void mx_log_extra(const mx_log_level_t level,
     static const char *const fmt = "%s:%s:%d: %s: %s\n"; 
         
     fprintf(stderr, fmt, file, func, line, _mx_log_get_errstr(level), message);
+    
+    if (level == MX_LOG_EMERG) exit(EXIT_FAILURE);
 }

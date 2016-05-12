@@ -11,7 +11,6 @@ AC_PROG_CC
 LT_INIT
 
 PKG_CHECK_MODULES(MODEX, [
-    epoxy >= 1.3.1,
     gl >= 11.2.1,
     sdl2 >= 2.0.4 
 ])

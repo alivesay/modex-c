@@ -5,8 +5,6 @@
 #include "core/mx_types.h"
 #endif
 
-#include <epoxy/gl.h>
-
 typedef struct {
     GLuint gl_program_id;
 } mx_gl_program_t;

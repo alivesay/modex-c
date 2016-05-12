@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <epoxy/gl.h>
-#include <epoxy/glx.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengles2.h>
 
@@ -82,6 +80,8 @@ void mx_video_init(void) {
 }
 
 void _mx_video_gl_init(void) {
+    mx_gl_init();
+
     GLint max_tex_image_units;
     GLint max_tex_size;
 

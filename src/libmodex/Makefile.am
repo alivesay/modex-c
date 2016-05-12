@@ -1,12 +1,14 @@
 AM_CFLAGS = \
 	-I${top_srcdir}/src/libmodex \
+	-I${top_srcdir}/src/libmodex/ext \
 	-Wall \
 	-std=c99 \
 	-pthread \
-	-D_REENTRANT
+	-D_REENTRANT \
+	-g
 
 AM_LDFLAGS = \
-	-lepoxy \
+	-ldl \
 	-lGL \
     -lSDL2
 
@@ -18,6 +20,9 @@ libmodex_la_SOURCES = \
 	core/mx_math.c \
 	core/mx_memory.c \
 	core/mx_util.c \
+	\
+	ext/glad/glad.c \
+	\
 	gl/mx_gl_common.c \
 	gl/mx_gl_program.c \
     core/mx_video.c 
@@ -32,6 +37,9 @@ modex.h: libmodex.la
 		core/mx_math.h \
 		core/mx_memory.h \
 		core/mx_util.h \
+		\
+		ext/glad/glad.h \
+		\
 		gl/mx_gl_common.h \
 		gl/mx_gl_vbo.h \
 		gl/mx_gl_program.h \
