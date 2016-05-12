@@ -25,7 +25,6 @@
 #define MX_FREE(ptr) \
     do { \
         free(ptr); \
-        ptr = NULL; \
     } while(0)
 
 #define MX_CHECKBOUNDS(arr, n, size) ((arr != NULL) && (n >= 0) && (n < size))

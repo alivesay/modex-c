@@ -7,6 +7,7 @@
 #endif
 
 #include <epoxy/gl.h>
+#include <epoxy/glx.h>
 
 #define MX_GL_ERRCHK(lvl) mx_gl_errchk(lvl, __FILE__, __func__, __LINE__)
 

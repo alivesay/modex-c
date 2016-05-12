@@ -19,7 +19,7 @@ PKG_CHECK_MODULES(MODEX, [
 AC_CONFIG_FILES([
 	Makefile
 	po/Makefile.in
-    lib/Makefile
+    src/libmodex/Makefile
 	src/Makefile
 ])
 

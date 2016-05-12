@@ -1,10 +1,11 @@
 #include "modex.h"
 
 #include <unistd.h>
-#include <stdio.h>
 
 int main() {
-   
+
+    mx_log(MX_LOG_INFO, "Booting...");
+    
     mx_video_init();
     mx_video_mode_set(320, 240, 8, false);
     mx_video_view_set();

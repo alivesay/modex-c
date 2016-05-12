@@ -15,6 +15,12 @@
 
 /* global video state */
 mx_video_t g_mx_video = { 0 };
+    GLfloat triangle[] = {
+        160.0f, 10.0f,
+        310.0f, 230.0f,
+        10.0f, 230.0f,
+    };
+
 
 void _mx_video_gl_init(void);
 void _mx_video_view_set(void);
@@ -26,14 +32,16 @@ void _mx_video_ortho(GLfloat *matrix,
 void _mx_video_dump_shader_log(GLuint shader);
 
 static const char *_mx_video_default_screen_vertex_glsl =
-        "precision highp float;\n"
-        "uniform mat4 uProjectionMatrix;\n"
-        "attribute vec2 Position;\n"
-        "void main() {\n"
-        "   gl_Position = uProjectionMatrix * vec4(Position, 0.0, 1.0);\n"
-        "}";
+    "#version 100\n"
+    "precision highp float;\n"
+    "uniform mat4 uProjectionMatrix;\n"
+    "attribute vec2 Position;\n"
+    "void main() {\n"
+    "   gl_Position = uProjectionMatrix * vec4(Position, 0.0, 1.0);\n"
+    "}";
 
 const char *_mx_video_default_screen_fragment_glsl =
+        "#version 100\n"
         "precision highp float;\n"
         "vec4 color = vec4(1.0,1.0,1.0,1.0);\n"
         "void main() {\n"
@@ -79,12 +87,6 @@ void _mx_video_gl_init(void) {
 
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &max_tex_image_units);
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
-
-    const GLfloat triangle[] = {
-        160.0f, 10.0f,
-        310.0f, 230.0f,
-        10.0f, 230.0f
-    };
 
     glGenBuffers(1, &g_mx_video.vbo);
     glBindBuffer(GL_ARRAY_BUFFER, g_mx_video.vbo);
@@ -212,6 +214,11 @@ void mx_video_draw_begin(void) {
     //glClearDepthf(1.0f);
     glClearColor(32/255.0f, 64/255.0f, 144/255.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    triangle[0]++;
+    glBindBuffer(GL_ARRAY_BUFFER, g_mx_video.vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(triangle), triangle);
+
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }

@@ -1,4 +1,4 @@
-SUBDIRS = po lib src
+SUBDIRS = po src
 
 AM_CFLAGS = -I${top_srcdir}/include -std=c99
 
