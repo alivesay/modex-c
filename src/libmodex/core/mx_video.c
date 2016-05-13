@@ -1,7 +1,7 @@
 #include "core/mx_types.h"
 #include "core/mx_log.h"
 #include "core/mx_math.h"
-#include "gl/mx_gl_common.h"
+#include "gl/mx_gl.h"
 
 #include "mx_video.h"
 
@@ -80,7 +80,7 @@ void mx_video_init(void) {
 }
 
 void _mx_video_gl_init(void) {
-    mx_gl_init();
+    mx_gl_init(&g_mx_video.gl);
 
     GLint max_tex_image_units;
     GLint max_tex_size;

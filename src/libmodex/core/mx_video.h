@@ -2,8 +2,9 @@
 #define H_MXVIDEO
 
 #ifndef H_MODEX
-#include "mx_types.h"
-#include "mx_color.h"
+#include "core/mx_types.h"
+#include "core/mx_color.h"
+#include "gl/mx_gl.h"
 #endif
 
 #include <SDL2/SDL.h>
@@ -11,6 +12,8 @@
 typedef struct {
     uint16_t width, height;
     
+    mx_gl_t gl;
+
     SDL_Window *window;
     SDL_GLContext glcontext;
 

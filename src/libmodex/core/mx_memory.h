@@ -8,29 +8,10 @@
 
 #include <stdlib.h>
 
-#define MX_MALLOC(ptr, size) \
-    do { \
-        ptr = malloc(size); \
-        if (!ptr) \
-            mx_log_extra(MX_LOG_CRIT, "malloc() failed", __FILE__, __func__, __LINE__); \
-    }  while(0)
 
-#define MX_CALLOC(ptr, nmemb, size) \
-    do { \
-        ptr = calloc(nmemb, size); \
-        if (!ptr) \
-            mx_log_extra(MX_LOG_CRIT, "calloc() failed", __FILE__, __func__, __LINE__); \
-    } while(0)
-
-#define MX_FREE(ptr) \
-    do { \
-        free(ptr); \
-    } while(0)
-
-#define MX_CHECKBOUNDS(arr, n, size) ((arr != NULL) && (n >= 0) && (n < size))
-
-void* mx_malloc(const size_t size);
-void* mx_calloc(const size_t nmemb, const size_t size);
-void mx_free(void* ptr);
+void* mx_memory_malloc(const size_t size);
+void* mx_memory_calloc(const size_t nmemb, const size_t size);
+void* mx_memory_realloc(void* oldptr, const size_t size);
+void mx_memory_free(void* ptr);
 
 #endif // H_MXMEMORY

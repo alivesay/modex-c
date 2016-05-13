@@ -1,12 +1,12 @@
 #include "core/mx_types.h"
 #include "core/mx_log.h"
+#include "gl/mx_gl_common.h"
+#include "gl/mx_gl_info.h"
 
-#include "mx_gl_common.h"
+#include "mx_gl.h"
 
-#include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengles2.h>
-
 
 static const char* _mx_gl_errstr_GL_NO_ERROR =
     "GL_NO_ERROR";
@@ -55,8 +55,8 @@ void mx_gl_errchk(const mx_log_level_t level,
     }
 }
 
-void mx_gl_init(void) {
+void mx_gl_init(mx_gl_t *const gl) {
     if(!gladLoadGLES2Loader(SDL_GL_GetProcAddress)) {
-        MX_LOG(MX_LOG_EMERG, "gladLoadGL() failed");
+        MX_LOG(MX_LOG_EMERG, "gladLoadGLES2Loader() failed");
     }
 }

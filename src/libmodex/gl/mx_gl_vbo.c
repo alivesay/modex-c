@@ -2,6 +2,7 @@
 #include "core/mx_math.h"
 #include "core/mx_memory.h"
 #include "gl/mx_gl_common.h"
+#include "gl/mx_gl.h"
 
 #include "mx_gl_vbo.h"
 
@@ -9,7 +10,8 @@ mx_gl_vbo_t* mx_gl_vbo_create(mx_gl_vbo_t *const vbo,
                       const size_t size,
                       const GLenum usage) {
 
-    MX_MALLOC(vbo->buffer, MX_NP2(size));
+    // TODO: is there a max vbo size?
+    vbo->buffer = mx_memory_malloc(MX_NP2(size));
     if (!vbo->buffer) goto _error;
 
     glGenBuffers(1, &vbo->gl_vbo_id);
@@ -26,6 +28,6 @@ _error:
 }
 
 void mx_gl_vbo_free(mx_gl_vbo_t *vbo) {
-    MX_FREE(vbo->buffer);
+    mx_memory_free(vbo->buffer);
     glDeleteBuffers(1, &vbo->gl_vbo_id);
 }

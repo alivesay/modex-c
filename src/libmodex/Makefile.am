@@ -23,7 +23,8 @@ libmodex_la_SOURCES = \
 	\
 	ext/glad/glad.c \
 	\
-	gl/mx_gl_common.c \
+	gl/mx_gl_info.c \
+	gl/mx_gl.c \
 	gl/mx_gl_program.c \
     core/mx_video.c 
 
@@ -32,15 +33,17 @@ modex.h: libmodex.la
 		> ${top_srcdir}/include/modex.h \
 	&& cat \
 		core/mx_types.h \
+		core/mx_util.h \
 		core/mx_color.h \
 		core/mx_log.h \
 		core/mx_math.h \
 		core/mx_memory.h \
-		core/mx_util.h \
 		\
 		ext/glad/glad.h \
 		\
 		gl/mx_gl_common.h \
+		gl/mx_gl_info.h \
+		gl/mx_gl.h \
 		gl/mx_gl_vbo.h \
 		gl/mx_gl_program.h \
 		core/mx_video.h \

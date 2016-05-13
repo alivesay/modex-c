@@ -1,6 +1,8 @@
 #include "core/mx_types.h"
 #include "core/mx_log.h"
 #include "gl/mx_gl_common.h"
+#include "gl/mx_gl.h"
+#include "gl/mx_gl_info.h"
 
 #include "mx_gl_program.h"
 
