@@ -34,5 +34,3 @@ inline void* mx_memory_realloc(void* old_ptr, const size_t size) {
 inline void mx_memory_free(void* ptr) {
     free(ptr);
 }
-
-#define MX_CHECKBOUNDS(arr, n, size) ((arr != NULL) && (n >= 0) && (n < size))

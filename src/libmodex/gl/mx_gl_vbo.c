@@ -10,7 +10,6 @@ mx_gl_vbo_t* mx_gl_vbo_create(mx_gl_vbo_t *const vbo,
                       const size_t size,
                       const GLenum usage) {
 
-    // TODO: is there a max vbo size?
     vbo->buffer = mx_memory_malloc(MX_NP2(size));
     if (!vbo->buffer) goto _error;
 

@@ -1,4 +1,4 @@
-SUBDIRS = libmodex
+SUBDIRS = libmodex tests
 
 AM_CFLAGS = \
 	-I${top_srcdir}/include \

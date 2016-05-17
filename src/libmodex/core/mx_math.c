@@ -37,3 +37,7 @@ inline uint64_t mx_math_pp2(uint64_t n) {
 inline bool mx_math_isp2(const uint64_t n) {
     return n && !(n & (n-1));
 }
+
+inline bool mx_math_inrange(const uint64_t n, const uint64_t min, const uint64_t max) {
+    return n >= min && n <= max;
+}

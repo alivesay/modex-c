@@ -5,7 +5,10 @@
 #include "core/mx_util.h"
 #endif
 
-#define MX_LOG(lvl, msg) mx_log_extra(lvl, msg, __FILE__, __func__, __LINE__)
+#define MX_LOG(lvl, msg) \
+    do { \
+        mx_log_extra(lvl, msg, __FILE__, __func__, __LINE__); \
+    } while(0)
 
 typedef enum {
     MX_LOG_EMERG = 0,
@@ -28,4 +31,3 @@ void mx_log_extra(const mx_log_level_t level,
                   const int line);
 
 #endif // H_MXLOG
-

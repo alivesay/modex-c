@@ -16,5 +16,7 @@ uint64_t mx_math_pp2(uint64_t n);
 #define MX_PP2(n) mx_math_pp2(n)
 bool mx_math_isp2(const uint64_t n);
 #define MX_ISP2(n) mx_math_isp2(n)
+bool mx_math_inrange(const uint64_t n, const uint64_t min, const uint64_t max);
+#define MX_INRANGE(n, min, max) mx_math_inrange(n, min, max)
 
 #endif // H_MXMATH

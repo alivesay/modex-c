@@ -1,4 +1,5 @@
 #include "core/mx_memory.h"
+#include "core/mx_math.h"
 
 #include "mx_log.h"
 
@@ -17,7 +18,7 @@ static const char *const _mx_log_errstrs[_MX_LOG_LEVEL_COUNT] = {
 };
 
 static const char *const _mx_log_get_errstr(const mx_log_level_t level) {
-    if (MX_CHECKBOUNDS(_mx_log_errstrs, level, _MX_LOG_LEVEL_COUNT)) {
+    if (MX_INRANGE(level, 0, _MX_LOG_LEVEL_COUNT - 1)) {
         return _mx_log_errstrs[level];
     }
 

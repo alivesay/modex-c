@@ -12,13 +12,16 @@ LT_INIT
 
 PKG_CHECK_MODULES(MODEX, [
     gl >= 11.2.1,
-    sdl2 >= 2.0.4 
+    sdl2 >= 2.0.4
 ])
+
+PKG_CHECK_MODULES(CHECK, [ check >= 0.9.10 ])
 
 AC_CONFIG_FILES([
 	Makefile
 	po/Makefile.in
     src/libmodex/Makefile
+    src/tests/Makefile
 	src/Makefile
 ])
 
