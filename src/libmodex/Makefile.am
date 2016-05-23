@@ -20,6 +20,7 @@ libmodex_la_SOURCES = \
 	core/mx_color.c \
 	core/mx_log.c \
 	core/mx_math.c \
+	core/mx_vector.c \
 	core/mx_slist.c \
 	\
 	ext/glad/glad.c \
@@ -44,6 +45,7 @@ modex.h: libmodex.la
 		core/mx_color.h \
 		core/mx_log.h \
 		core/mx_math.h \
+		core/mx_vector.h \
 		core/mx_slist.h \
 		\
 		ext/glad/glad.h \
