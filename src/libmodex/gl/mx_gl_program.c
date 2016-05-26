@@ -1,4 +1,5 @@
 #include "core/mx_types.h"
+#include "core/mx_memory.h"
 #include "core/mx_log.h"
 #include "gl/mx_gl_common.h"
 #include "gl/mx_gl.h"
@@ -6,11 +7,27 @@
 
 #include "mx_gl_program.h"
 
-// maybe return error?
-void mx_gl_program_create(mx_gl_program_t *const program) {
+mx_gl_program_t* mx_gl_program_create(void) {
+    mx_gl_program_t* program = MX_CALLOC(1, sizeof(mx_gl_program_t));
+    mx_gl_program_init(program);
+
+    return program;
+}
+
+void mx_gl_program_init(mx_gl_program_t *const program) {
     program->gl_program_id = glCreateProgram();
     
     MX_GL_ERRCHK(MX_LOG_ERR);
+}
+
+void mx_gl_program_destroy(mx_gl_program_t *const program) {
+    glDeleteProgram(program->gl_program_id);
+}
+
+void mx_gl_program_free(mx_gl_program_t** program) {
+    mx_gl_program_destroy(*program);
+    MX_FREE(*program);
+    program = NULL; 
 }
 
 void _mx_gl_program_shader_log(GLuint shader) {
@@ -53,6 +70,4 @@ void mx_gl_program_unuse(const mx_gl_program_t *const program) {
     glUseProgram(0);
 }
 
-void mx_gl_program_free(mx_gl_program_t *program) {
-    glDeleteProgram(program->gl_program_id);
-}
+

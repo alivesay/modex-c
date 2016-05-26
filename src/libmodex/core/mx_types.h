@@ -11,6 +11,7 @@ enum mx_error_type_t {
     _MX_ERROR_TYPE_COUNT
 };
 
+typedef void(*mx_free_fn_t)(void* data);
 typedef bool(*mx_compare_fn_t)(const void *const a, const void *const b);
 typedef void(*mx_free_fn_t)(void* data);
 
