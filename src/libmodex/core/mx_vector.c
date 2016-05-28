@@ -8,14 +8,27 @@
 
 static const size_t _mx_vector_initial_capacity = 64;
 
-inline void mx_vector_create(mx_vector_t *const vector) {
+inline mx_vector_t* mx_vector_create(void) {
+    mx_vector_t* vector = MX_CALLOC(1, sizeof(mx_vector_t));
+    mx_vector_init(vector);
+
+    return vector;
+}
+
+inline void mx_vector_init(mx_vector_t *const vector) {
     vector->size = 0;
     vector->capacity = _mx_vector_initial_capacity;
     vector->data = MX_MALLOC(sizeof(void*) * vector->capacity);
 }
 
-inline void mx_vector_free(mx_vector_t* vector) {
+inline void mx_vector_destroy(mx_vector_t* vector) {
     MX_FREE(vector->data);
+}
+
+inline void mx_vector_free(mx_vector_t** vector) {
+    mx_vector_destroy(*vector);
+    MX_FREE(*vector);
+    *vector = NULL;
 }
 
 inline void mx_vector_grow(mx_vector_t* vector, const size_t min_capacity) {

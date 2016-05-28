@@ -11,10 +11,10 @@ typedef struct {
     void* buffer;
 } mx_gl_vbo_t;
 
-mx_gl_vbo_t* mx_gl_vbo_create(mx_gl_vbo_t *const vbo,
-                      const size_t size,
-                      const GLenum usage);
-void mx_gl_vbo_free(mx_gl_vbo_t* vbo);
+mx_gl_vbo_t* mx_gl_vbo_create(const size_t size, const GLenum usage);
+mx_gl_vbo_t* mx_gl_vbo_init(mx_gl_vbo_t *const vbo, const size_t size, const GLenum usage);
+void mx_gl_vbo_destroy(mx_gl_vbo_t *const vbo);
+void mx_gl_vbo_free(mx_gl_vbo_t** vbo);
 
 // bind
 // unbind

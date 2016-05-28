@@ -17,7 +17,7 @@ typedef enum {
 
 typedef struct {
     mx_gl_state_cap_flags_t cap_flags;
-    Mx_gl_program_t* program;
+    mx_gl_program_t* program;
     mx_gl_vbo_t* vbo;
 
     // viewport
@@ -29,6 +29,7 @@ void mx_gl_state_destroy(mx_gl_state_t *const state);
 void mx_gl_state_free(mx_gl_state_t** state);
 void mx_gl_state_synchronize(mx_gl_state_t* state);
 void mx_gl_state_update(mx_gl_state_t* state);
+void mx_gl_state_set_capabilities(mx_gl_state_t *const state, const mx_gl_state_cap_flags_t cap_flags, const bool enabled);
 void mx_gl_state_enable_capabilities(mx_gl_state_t *const state, const mx_gl_state_cap_flags_t cap_flags);
 void mx_gl_state_disable_capabilities(mx_gl_state_t *const state, const mx_gl_state_cap_flags_t cap_flags);
 void mx_gl_state_enable(mx_gl_state_t *const state);

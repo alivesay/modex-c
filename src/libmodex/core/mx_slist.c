@@ -5,26 +5,36 @@
 
 #include <stdlib.h>
 
-void mx_slist_create(mx_slist_t *const slist) {
+mx_slist_t* mx_slist_create(void) {
+    mx_slist_t* slist = MX_CALLOC(1, sizeof(mx_slist_t));
+    mx_slist_init(slist);
+    return slist;
 }
 
-void mx_slist_free(mx_slist_t* slist) {
+void mx_slist_init(mx_slist_t *const slist) {
+}
+
+void mx_slist_free(mx_slist_t** slist) {
     mx_slist_t* p;
+    mx_slist_t* last_node = *slist;
     
-    while ((p = slist)) {
-        slist = slist->next;
+    while ((p = last_node)) {
+        last_node = last_node->next;
         MX_FREE(p);
     }
+    *slist = NULL;
 }
 
-void mx_slist_free_custom(mx_slist_t *slist, const mx_free_fn_t free_fn) {
-    mx_slist_t *p;
+void mx_slist_free_custom(mx_slist_t **slist, const mx_free_fn_t free_fn) {
+    mx_slist_t* p;
+    mx_slist_t* last_node = *slist;
 
-    while (p = slist) {
-        slist = slist->next;
+    while (p = last_node) {
+        last_node = last_node->next;
         free_fn(p->data);
         MX_FREE(p);
     }
+    *slist = NULL;
 }
 
 mx_slist_t* mx_slist_insert(mx_slist_t *const slist, void *const data) {

@@ -11,8 +11,10 @@ typedef struct {
     size_t size;
 } mx_vector_t;
 
-void mx_vector_create(mx_vector_t *const vector);
-void mx_vector_free(mx_vector_t* vector);
+mx_vector_t* mx_vector_create(void);
+void mx_vector_init(mx_vector_t *const vector);
+void mx_vector_destroy(mx_vector_t *const vector);
+void mx_vector_free(mx_vector_t** vector);
 void mx_vector_grow(mx_vector_t* vector, const size_t min_capacity);
 void mx_vector_append(mx_vector_t *const vector, void *const element);
 void mx_vector_set(mx_vector_t *const vector, size_t index, void *const element);

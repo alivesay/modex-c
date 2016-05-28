@@ -33,6 +33,19 @@ void mx_gl_state_update(mx_gl_state_t* state) {
 void mx_gl_state_synchronize(mx_gl_state_t* state) {
     // set state to current values...
     // vbo refs etc will require be able to lookup vbos by GLint id
+    mx_gl_state_set_capabilities(state, MX_GL_STATE_CAP_BLEND, glIsEnabled(GL_BLEND));
+    mx_gl_state_set_capabilities(state, MX_GL_STATE_CAP_CULL_FACE, glIsEnabled(GL_CULL_FACE));
+//    mx_gl_state_set_capabilities(state, MX_GL_STATE_CAP_DEPTH_CLAMP, glIsEnabled(GL_DEPTH_CLAMP));
+    mx_gl_state_set_capabilities(state, MX_GL_STATE_CAP_DEPTH_TEST, glIsEnabled(GL_DEPTH_TEST));
+    // vbo = getfromglid
+    // program = mx_gl_program_create_from_current
+}
+
+void mx_gl_state_set_capabilities(mx_gl_state_t *const state, const mx_gl_state_cap_flags_t cap_flags, const bool enabled) {
+    if (enabled)
+        mx_gl_state_enable_capabilities(state, cap_flags);
+    else 
+        mx_gl_state_disable_capabilities(state, cap_flags);
 }
 
 void mx_gl_state_enable_capabilities(mx_gl_state_t *const state, const mx_gl_state_cap_flags_t cap_flags) {
