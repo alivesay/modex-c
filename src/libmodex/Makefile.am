@@ -9,6 +9,7 @@ AM_CFLAGS = \
 
 AM_LDFLAGS = \
 	-ldl \
+	-lm \
 	-lGL \
     -lSDL2
 

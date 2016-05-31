@@ -1,39 +1,51 @@
 #include "core/mx_types.h"
 #include "core/mx_log.h"
+#include "core/mx_memory.h"
 
 #include "mx_sdl.h"
 
 #include <SDL2/SDL.h>
 
-typedef struct {
-    bool initialized;
-    bool video_initialized;
-} _mx_sdl_status_t;
+mx_sdl_t* mx_sdl_create(void) {
+    mx_sdl_t* sdl = MX_CALLOC(1, sizeof(mx_sdl_t));
+    return mx_sdl_init(sdl);
+}
 
-static _mx_sdl_status_t _mx_sdl_status = {0};
-
-void mx_sdl_init(void) {
-    if (_mx_sdl_status.initialized) {
+mx_sdl_t* mx_sdl_init(mx_sdl_t *const sdl) {
+    if (sdl->initialized) {
         MX_LOG(MX_LOG_ERR, "SDL already initalized");
-        return;
+        return sdl;
     }
 
     if (SDL_Init(0)) {
         MX_LOG(MX_LOG_CRIT, SDL_GetError());
-        return;
+        return NULL;
     }
 
-    _mx_sdl_status.initialized = true;
+    sdl->initialized = true;
+
+    return sdl;
 }
 
-void mx_sdl_shutdown(void) {
-    if (_mx_sdl_status.initialized) {
+void mx_sdl_destroy(mx_sdl_t *const sdl) {
+    if (sdl->video_initialized) {
+        mx_sdl_video_shutdown(sdl);
+    }
+
+    if (sdl->initialized) {
         SDL_Quit();
+        sdl->initialized = false;
     }
 }
 
-void mx_sdl_video_init(void) {
-    if (_mx_sdl_status.video_initialized) {
+void mx_sdl_free(mx_sdl_t** sdl) {
+    mx_sdl_destroy(*sdl);
+    MX_FREE(*sdl);
+    *sdl = NULL;
+}
+
+void mx_sdl_video_init(mx_sdl_t *const sdl) {
+    if (sdl->video_initialized) {
         MX_LOG(MX_LOG_ERR, "SDL video subsystem already initalized");
         return;
     }
@@ -43,11 +55,11 @@ void mx_sdl_video_init(void) {
         return;
     }
 
-    _mx_sdl_status.video_initialized = true;
+    sdl->video_initialized = true;
 }
 
-void mx_sdl_video_shutdown(void) {
-    if (_mx_sdl_status.video_initialized) {
+void mx_sdl_video_shutdown(mx_sdl_t *const sdl) {
+    if (sdl->video_initialized) {
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
     }
 }

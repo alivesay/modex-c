@@ -15,9 +15,9 @@ mx_gl_fbo_t* mx_gl_fbo_create(void) {
 }
 
 mx_gl_fbo_t* mx_gl_fbo_init(mx_gl_fbo_t *const fbo) {
-    glGenFramebuffers(1, &fbo->gl_id);
+    glGenFramebuffers(1, &fbo->gl_fbo_id);
 
-    if (glIsFramebuffer(fbo->gl_id) == GL_FALSE) {
+    if (glIsFramebuffer(fbo->gl_fbo_id) == GL_FALSE) {
         MX_GL_ERRCHK(MX_LOG_ERR);
         return NULL;
     }
@@ -26,7 +26,7 @@ mx_gl_fbo_t* mx_gl_fbo_init(mx_gl_fbo_t *const fbo) {
 }
 
 void mx_gl_fbo_destroy(mx_gl_fbo_t *const fbo) {
-    glDeleteFramebuffers(1, &fbo->gl_id);
+    glDeleteFramebuffers(1, &fbo->gl_fbo_id);
 }
 
 void mx_gl_fbo_free(mx_gl_fbo_t** fbo) {
@@ -35,8 +35,16 @@ void mx_gl_fbo_free(mx_gl_fbo_t** fbo) {
     *fbo = NULL;
 }
 
+void mx_gl_fbo_bind(const mx_gl_fbo_t const* fbo) {
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo->gl_fbo_id);
+}
+
+void mx_gl_fbo_unbind(const mx_gl_fbo_t const* fbo) {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 
 /*
 void mx_gl_fbo_get_current(mx_gl_fbo_t *const fbo) {
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fbo->gl_id);
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fbo->gl_fbo_id);
 }*/

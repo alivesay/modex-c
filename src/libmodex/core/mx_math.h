@@ -19,4 +19,9 @@ bool mx_math_isp2(const uint64_t n);
 bool mx_math_inrange(const uint64_t n, const uint64_t min, const uint64_t max);
 #define MX_INRANGE(n, min, max) mx_math_inrange(n, min, max)
 
+float mx_math_cos(const float x);
+#define MX_COS(x) mx_cos(x);
+float mx_math_sin(const float x);
+#define MX_SIN(x) mx_sin(x);
+
 #endif // H_MXMATH

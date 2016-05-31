@@ -16,7 +16,9 @@ typedef struct {
     const uint8_t* extensions;
 } mx_gl_info_t;
 
-void mx_gl_info_create(mx_gl_info_t *const info);
-void mx_gl_info_free(mx_gl_info_t* info);
+mx_gl_info_t* mx_gl_info_create(void);
+mx_gl_info_t* mx_gl_info_init(mx_gl_info_t *const info);
+void mx_gl_info_destroy(mx_gl_info_t *const info);
+void mx_gl_info_free(mx_gl_info_t** info);
 
 #endif // H_MXGLINFO
