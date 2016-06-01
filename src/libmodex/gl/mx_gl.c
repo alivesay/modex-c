@@ -12,7 +12,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengles2.h>
 
-static const _mx_clear_color = 0x204090;
+static const uint32_t _mx_clear_color = 0x204090;
 
 static const char *_mx_gl_default_screen_vertex_glsl =
     "#version 100\n"
@@ -65,7 +65,8 @@ mx_gl_t* mx_gl_init(mx_gl_t *const gl) {
                                 GL_FRAGMENT_SHADER);
 
     gl->_ortho_view = true;
-    gl->_clear_color = 
+    // TODO: fix it
+    gl->_clear_color = mx_color_norm_from_hex(_mx_clear_color);
 
     MX_GL_ERRCHK(MX_LOG_CRIT);
 
@@ -116,3 +117,16 @@ void mx_gl_set_projection_ortho(mx_gl_t *const gl) {
     *matrix++ = -(z_far + z_near) * inv_z;
     *matrix++ = 1.0f;
 }
+
+void mx_gl_draw_begin(const mx_gl_t *const gl) {
+    glClearColor(gl->_clear_color.r, gl->_clear_color.g, gl->_clear_color.b, gl->_clear_color.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // draw render lists? who calls this?
+}
+
+void mx_gl_draw_end(const mx_gl_t *const gl) {
+    // anything to unbind here?
+    MX_GL_ERRCHK(MX_LOG_ERR);
+}
+
+

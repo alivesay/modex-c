@@ -27,7 +27,7 @@ mx_color_t mx_color_from_norm(const mx_color_norm_t color);
 mx_color_t mx_color_from_argb(const uint8_t a, const uint8_t r, const uint8_t g, const uint8_t b);
 mx_color_norm_t mx_color_norm_from_argb(const uint8_t a, const uint8_t r, const uint8_t g, const uint8_t b);
 mx_color_t mx_color_from_hex(uint32_t packed_color);
-mx_color_norm_t mx_color_norm_hex(uint32_t packed_color);
+mx_color_norm_t mx_color_norm_from_hex(uint32_t packed_color);
 
 
 

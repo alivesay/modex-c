@@ -21,16 +21,21 @@ libmodex_la_SOURCES = \
 	core/mx_color.c \
 	core/mx_log.c \
 	core/mx_math.c \
+	core/mx_matrix4.c \
 	core/mx_vector.c \
 	core/mx_slist.c \
+	core/mx_uintpool.c \
+	core/mx_uintmap.c \
 	\
 	ext/glad/glad.c \
 	\
 	sdl/mx_sdl.c \
 	sdl/mx_sdl_screen.c \
 	\
+	gl/mx_gl_common.c \
 	gl/mx_gl_info.c \
 	gl/mx_gl_program.c \
+	gl/mx_gl_resourcemanager.c \
 	gl/mx_gl.c \
     core/mx_video.c \
 	\
@@ -46,8 +51,11 @@ modex.h: libmodex.la
 		core/mx_color.h \
 		core/mx_log.h \
 		core/mx_math.h \
+		core/mx_matrix4.h \
 		core/mx_vector.h \
 		core/mx_slist.h \
+		core/mx_uintpool.h \
+		core/mx_uintmap.h \
 		\
 		ext/glad/glad.h \
 		\
@@ -58,6 +66,7 @@ modex.h: libmodex.la
 		gl/mx_gl_info.h \
 		gl/mx_gl_vbo.h \
 		gl/mx_gl_program.h \
+		gl/mx_gl_resourcemanager.h \
 		gl/mx_gl.h \
 		core/mx_video.h \
 		\

@@ -4,11 +4,13 @@
 #ifndef H_MODEX
 #include "core/mx_types.h"
 #include "core/mx_video.h"
+#include "sdl/mx_sdl.h"
 #endif
 
 typedef struct {
-    mx_video_t video;
     bool running;
+    mx_video_t _video;
+    mx_sdl_t _sdl;
 } mx_modex_t;
 
 extern mx_modex_t g_mx_modex;

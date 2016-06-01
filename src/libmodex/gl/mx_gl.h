@@ -4,6 +4,7 @@
 #ifndef H_MODEX
 #include "core/mx_types.h"
 #include "core/mx_color.h"
+#include "core/mx_matrix4.h"
 #include "gl/mx_gl_common.h"
 #include "gl/mx_gl_info.h"
 #include "gl/mx_gl_program.h"
@@ -28,7 +29,7 @@ mx_gl_t* mx_gl_init(mx_gl_t *const gl);
 void mx_gl_destroy(mx_gl_t *const gl);
 void mx_gl_free(mx_gl_t** gl);
 
-void mx_gl_set_viewport(uint16_t width, uiidnt16_t height);
+void mx_gl_set_viewport(uint16_t width, uint16_t height);
 void mx_gl_set_projection_ortho(mx_gl_t *const gl);
 
 void mx_gl_draw_begin(const mx_gl_t *const gl);

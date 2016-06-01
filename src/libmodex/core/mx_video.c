@@ -1,6 +1,7 @@
 #include "core/mx_types.h"
 #include "core/mx_log.h"
 #include "core/mx_math.h"
+#include "core/mx_memory.h"
 #include "sdl/mx_sdl.h"
 #include "sdl/mx_sdl_screen.h"
 #include "gl/mx_gl.h"
@@ -20,18 +21,36 @@
 static uint16_t _mx_video_initial_width = 320;
 static uint16_t _mx_video_initial_height = 240;
 
-void _mx_video_gl_init(void);
-void _mx_video_view_set(void);
-void _mx_video_ortho(GLfloat *matrix,
-                     GLfloat left,
-                     GLfloat right,
-                     GLfloat bottom,
-                     GLfloat top);
+mx_video_t* mx_video_create(mx_sdl_t *const sdl) {
+    mx_video_t* video = MX_CALLOC(1, sizeof(mx_video_t));
+    return mx_video_init(video, sdl);
+}
 
-void mx_video_create(mx_video_t *const video) {
-    mx_sdl_video_init();
-    mx_sdl_screen_create(&video->screen);
-    mx_gl_create(&video->gl);
+mx_video_t* mx_video_init(mx_video_t *const video, mx_sdl_t *const sdl) {
+    // TODO: might need to reverse the order here
+    mx_sdl_video_init(sdl);
+    video->_sdl_screen = mx_sdl_screen_create();
+    video->_gl = mx_gl_create();
+    video->_sdl_ref = sdl;
+    return video;
+}
+
+void mx_video_destroy(mx_video_t *const video) {
+    mx_sdl_screen_free(&video->_sdl_screen);
+    mx_sdl_video_shutdown(video->_sdl_ref);
+    mx_gl_free(&video->_gl);
+}
+
+void mx_video_free(mx_video_t** video) {
+    mx_video_destroy(*video);
+    MX_FREE(*video);
+    *video = NULL;
+}
+
+void mx_video_mode_set(mx_video_t *const video, const mx_video_mode_t video_mode) {
+    // TODO: sdl_screen currently has a fixed video mode
+    // set gl viewport
+    mx_gl_set_projection_ortho(video->_gl);
 }
 
 void _mx_video_gl_init(void) {
@@ -48,26 +67,6 @@ void _mx_video_gl_init(void) {
 
     MX_GL_ERRCHK(MX_LOG_ERR);
 */
-}
-
-void mx_video_mode_set(uint16_t width, uint16_t height, uint8_t bpp, bool fullscreen) {
-    /*
-    // TODO: what if it exists/
-    g_mx_video.window = SDL_CreateWindow(
-        "MODEX",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        width,
-        height,
-        SDL_WINDOW_OPENGL);
-    
-    g_mx_video.glcontext = SDL_GL_CreateContext(g_mx_video.window); 
-
-    g_mx_video.width = width;
-    g_mx_video.height = height;
-
-    _mx_video_gl_init();
-    */
 }
 
 void mx_video_view_set() {
@@ -87,34 +86,6 @@ void mx_video_view_set() {
 */
 }
 
-void _mx_video_ortho(GLfloat *matrix, GLfloat left, GLfloat right, GLfloat bottom, GLfloat top) {
-    const GLfloat z_near = -1.0f,
-                  z_far = 1.0f,
-                  inv_z = 1.0f / (z_far - z_near),
-                  inv_y = 1.0f / (top - bottom),
-                  inv_x = 1.0f / (right - left);
-
-    *matrix++ = 2.0f * inv_x;
-    *matrix++ = 0.0f;
-    *matrix++ = 0.0f;
-    *matrix++ = 0.0f;
-
-    *matrix++ = 0.0f;
-    *matrix++ = 2.0f * inv_y;
-    *matrix++ = 0.0f;
-    *matrix++ = 0.0f;
-
-    *matrix++ = 0.0f;
-    *matrix++ = 0.0f;
-    *matrix++ = -2.0f * inv_z;
-    *matrix++ = 0.0f;
-
-    *matrix++ = -(right + left) * inv_x;
-    *matrix++ = -(top + bottom) * inv_y;
-    *matrix++ = -(z_far + z_near) * inv_z;;
-    *matrix++ = 1.0f;
-}
-
 void mx_video_render_begin(const mx_video_t *const video) {
     //glEnable(GL_DEPTH_TEST);
     //glClearDepthf(1.0f);
@@ -122,7 +93,7 @@ void mx_video_render_begin(const mx_video_t *const video) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     triangle[0]++;
-    glBindBuffer(GL_ARRAY_BUFFER, video->vbo);
+//    glBindBuffer(GL_ARRAY_BUFFER, video->vbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(triangle), triangle);
 
 
@@ -130,13 +101,7 @@ void mx_video_render_begin(const mx_video_t *const video) {
 }
 
 void mx_video_render_end(const mx_video_t *const video) {
-    mx_sdl_screen_swap(&video->screen);
+  //  mx_sdl_screen_swap(&video->screen);
     // glDisable(GL_DEPTH_TEST);
     MX_GL_ERRCHK(MX_LOG_ERR);
-}
-
-void mx_video_free(mx_video_t* video) {
-    mx_gl_free(&video->gl);
-    mx_sdl_screen_free(&video->screen);
-    mx_sdl_shutdown();
 }

@@ -44,7 +44,7 @@ inline mx_color_t mx_color_from_hex(uint32_t packed_color) {
     return color;
 }
 
-inline mx_color_norm_t mx_color_norm_hex(uint32_t packed_color) {
+inline mx_color_norm_t mx_color_norm_from_hex(uint32_t packed_color) {
     mx_color_norm_t color_norm;
     // do bit twiddlin' here
     return color_norm;
