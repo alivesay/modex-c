@@ -54,15 +54,11 @@ mx_gl_t* mx_gl_init(mx_gl_t *const gl) {
     gl->info = mx_gl_info_create();
     if (!gl->info) goto mx_error;
     
-    gl->program = mx_gl_program_create();
+    gl->program = mx_gl_program_create(_mx_gl_default_screen_vertex_glsl,
+                                       _mx_gl_default_screen_fragment_glsl);
     if (!gl->program) goto mx_error;
 
-    mx_gl_program_attach_shader(gl->program,
-                                _mx_gl_default_screen_vertex_glsl,
-                                GL_VERTEX_SHADER);
-    mx_gl_program_attach_shader(gl->program,
-                                _mx_gl_default_screen_fragment_glsl,
-                                GL_FRAGMENT_SHADER);
+    mx_gl_program_use(gl->program);
 
     gl->_ortho_view = true;
     // TODO: fix it
@@ -73,6 +69,8 @@ mx_gl_t* mx_gl_init(mx_gl_t *const gl) {
     return gl;
 
 mx_error:
+    if (!gl->info) mx_gl_info_free(&gl->info);
+    if (!gl->program) mx_gl_program_free(&gl->program);
     MX_LOG(MX_LOG_CRIT, "mx_gl_init() failed");
     return NULL;
 }
@@ -118,8 +116,11 @@ void mx_gl_set_projection_ortho(mx_gl_t *const gl) {
     *matrix++ = 1.0f;
 }
 
+#include <stdio.h>
 void mx_gl_draw_begin(const mx_gl_t *const gl) {
     glClearColor(gl->_clear_color.r, gl->_clear_color.g, gl->_clear_color.b, gl->_clear_color.a);
+    printf("%f:%f:%f:%f\n", gl->_clear_color.r, gl->_clear_color.g, gl->_clear_color.b, gl->_clear_color.a);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // draw render lists? who calls this?
 }

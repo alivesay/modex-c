@@ -89,19 +89,22 @@ void mx_video_view_set() {
 void mx_video_render_begin(const mx_video_t *const video) {
     //glEnable(GL_DEPTH_TEST);
     //glClearDepthf(1.0f);
-    glClearColor(32/255.0f, 64/255.0f, 144/255.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    glClearColor(32/255.0f, 64/255.0f, 144/255.0f, 1.0f);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    triangle[0]++;
+//    triangle[0]++;
 //    glBindBuffer(GL_ARRAY_BUFFER, video->vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(triangle), triangle);
+//    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(triangle), triangle);
 
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+//    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    mx_gl_draw_begin(video->_gl);
 }
 
 void mx_video_render_end(const mx_video_t *const video) {
-  //  mx_sdl_screen_swap(&video->screen);
+    mx_gl_draw_end(video->_gl);
+    mx_sdl_screen_swap(video->_sdl_screen);
     // glDisable(GL_DEPTH_TEST);
     MX_GL_ERRCHK(MX_LOG_ERR);
 }

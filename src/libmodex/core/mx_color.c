@@ -40,12 +40,11 @@ inline mx_color_norm_t mx_color_norm_from_argb(const uint8_t a, const uint8_t r,
 inline mx_color_t mx_color_from_hex(uint32_t packed_color) {
     mx_color_t color;
     color.packed = packed_color;
-
     return color;
 }
 
 inline mx_color_norm_t mx_color_norm_from_hex(uint32_t packed_color) {
-    mx_color_norm_t color_norm;
-    // do bit twiddlin' here
-    return color_norm;
+    mx_color_t color;
+    color.packed = packed_color;
+    return mx_color_to_norm(color);
 }

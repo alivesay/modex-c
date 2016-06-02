@@ -27,6 +27,8 @@ mx_gl_info_t* mx_gl_info_init(mx_gl_info_t *const info) {
     info->renderer = glGetString(GL_RENDERER);
 
     _mx_gl_info_set_extensions(info);
+
+    return info;
 }
 
 void _mx_gl_info_set_extensions(mx_gl_info_t *const info) {

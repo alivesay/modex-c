@@ -7,16 +7,28 @@
 
 #include "mx_gl_program.h"
 
-mx_gl_program_t* mx_gl_program_create(void) {
+
+void _mx_gl_program_attach_shader(mx_gl_program_t *const program,
+                                  const char *src,
+                                  const GLenum type);
+void _mx_gl_program_shader_log(GLuint shader);
+void _mx_gl_program_program_log(GLuint program);
+void _mx_gl_program_link(mx_gl_program_t *const program);
+
+mx_gl_program_t* mx_gl_program_create(const char *const vertex_glsl, const char *const fragment_glsl) {
     mx_gl_program_t* program = MX_CALLOC(1, sizeof(mx_gl_program_t));
-    mx_gl_program_init(program);
+    mx_gl_program_init(program, vertex_glsl, fragment_glsl);
 
     return program;
 }
 
-void mx_gl_program_init(mx_gl_program_t *const program) {
+void mx_gl_program_init(mx_gl_program_t *const program, const char *const vertex_glsl, const char *const fragment_glsl) {
     program->gl_program_id = glCreateProgram();
-    
+
+    _mx_gl_program_attach_shader(program, vertex_glsl, GL_VERTEX_SHADER);
+    _mx_gl_program_attach_shader(program, fragment_glsl, GL_FRAGMENT_SHADER);
+    _mx_gl_program_link(program);
+
     MX_GL_ERRCHK(MX_LOG_ERR);
 }
 
@@ -38,26 +50,53 @@ void _mx_gl_program_shader_log(GLuint shader) {
     mx_log(MX_LOG_ERR, log);
 }
 
-void mx_gl_program_attach_shader(mx_gl_program_t *const program,
+void _mx_gl_program_program_log(GLuint program) {
+    GLint log_len;
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_len);
+    GLchar log[log_len];
+    glGetProgramInfoLog(program, log_len, &log_len, log);
+    mx_log(MX_LOG_ERR, log);
+}
+
+void _mx_gl_program_attach_shader(mx_gl_program_t *const program,
                                  const char *src,
                                  const GLenum type) {
-    GLuint shader = glCreateShader(type);
+    // TODO: this is a mess
+    GLuint *shader = (type == GL_VERTEX_SHADER) ?
+        &program->_gl_vertex_shader_id :
+        &program->_gl_fragment_shader_id;
+    
+    *shader = glCreateShader(type);
 
-    glShaderSource(shader, 1, &src, NULL);
-    glCompileShader(shader);
+    glShaderSource(*shader, 1, &src, NULL);
+    glCompileShader(*shader);
 
     GLuint compiled;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-
+    glGetShaderiv(*shader, GL_COMPILE_STATUS, &compiled);
     if (!compiled) {
-        _mx_gl_program_shader_log(shader);
+        _mx_gl_program_shader_log(*shader);
         return;
     }
 
-    glAttachShader(program->gl_program_id, shader);
+    glAttachShader(program->gl_program_id, *shader);
+
+    MX_GL_ERRCHK(MX_LOG_ERR);
+}
+
+void _mx_gl_program_link(mx_gl_program_t *const program) {
     glLinkProgram(program->gl_program_id);
-    glDetachShader(shader, program->gl_program_id);
-    glDeleteShader(shader);
+
+    GLuint linked;
+    glGetProgramiv(program->gl_program_id, GL_LINK_STATUS, &linked);
+    if (!linked) {
+        _mx_gl_program_program_log(program->gl_program_id);
+        return;
+    }
+
+    glDetachShader(program->gl_program_id, program->_gl_vertex_shader_id);
+    glDetachShader(program->gl_program_id, program->_gl_fragment_shader_id);
+    glDeleteShader(program->_gl_vertex_shader_id);
+    glDeleteShader(program->_gl_fragment_shader_id);
 
     MX_GL_ERRCHK(MX_LOG_ERR);
 }
